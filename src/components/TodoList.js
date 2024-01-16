@@ -1,45 +1,49 @@
 'use client'
-import { useState } from 'react';
-import { TextField, Button, List, ListItem, ListItemText, Checkbox } from '@mui/material';
 
-const TodoList = () => {
-  const [tasks, setTasks] = useState([]);
-  const [newTask, setNewTask] = useState('');
+import {useState} from "react";
 
-  const handleAddTask = () => {
-    if (newTask) {
-      setTasks([...tasks, { text: newTask, isCompleted: false }]);
-      setNewTask('');
+export default function () {
+  const [newTodo, setNewTodo] = useState("")
+  const [todos, setTodos] = useState([])
+
+  const handleAddTodo = () => {
+    if (newTodo) {
+      setTodos(() => [...todos, {text: newTodo, isDone: false}])
+      setNewTodo('')
     }
-  };
+  }
 
-  const toggleTask = (index) => {
-    const newTasks = [...tasks];
-    newTasks[index].isCompleted = !newTasks[index].isCompleted;
-    setTasks(newTasks);
-  };
+  const toggleTodo = (i) => {
+    const newTodos = [...todos]
+    newTodos[i].isDone = !newTodos[i].isDone
+    setTodos(newTodos)
+  }
+
 
   return (
     <div>
-      <TextField
-        label="New Task"
-        value={newTask}
-        onChange={(e) => setNewTask(e.target.value)}
-        style={{ marginRight: '10px' }}
+      <input
+        placeholder="New Todo"
+        value={newTodo}
+        onChange={(e) => setNewTodo(e.target.value)}
       />
-      <Button variant="contained" color="primary" onClick={handleAddTask}>
-        Add
-      </Button>
-      <List>
-        {tasks.map((task, index) => (
-          <ListItem key={index} button onClick={() => toggleTask(index)}>
-            <Checkbox checked={task.isCompleted} />
-            <ListItemText primary={task.text} />
-          </ListItem>
+      <button
+        onClick={handleAddTodo}
+      >Add todo
+      </button>
+      <ul style={{listStyleType: "none"}}>
+        {todos.map((el, i) => (
+          <li key={i} style={{}}>
+            <input
+              type="checkbox"
+              checked={el.isDone}
+              onClick={() => toggleTodo(i)}
+              onChange={() => {
+              }}
+            />
+            {el.text}</li>
         ))}
-      </List>
+      </ul>
     </div>
-  );
-};
-
-export default TodoList;
+  )
+}
